@@ -1,4 +1,6 @@
 # painter
+🥰Just for my wife, She is the pm.
+
 
 ## Project setup
 ```
