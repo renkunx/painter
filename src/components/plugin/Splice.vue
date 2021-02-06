@@ -1,5 +1,5 @@
 <template>
-  <div class="splice-app" :style="`grid-template-columns: repeat(${nums},1fr)`">
+  <div class="splice-app" :style="customStyle">
     <div class="splice-item" v-for="item in items" :key="item.id"></div>
   </div>
 </template>
@@ -14,6 +14,10 @@ export default {
       type: Number,
       require: true,
       default: 2
+    },
+    position: {
+      type: Object,
+      require: true
     }
   },
   computed: {
@@ -25,6 +29,12 @@ export default {
         })
       }
       return items
+    },
+    customStyle : function() {
+      return {
+        "grid-template-columns": `repeat(${this.nums}, 1fr)`,
+        ...this.position
+      }
     }
   }
 }
@@ -33,11 +43,9 @@ export default {
 <style lang="scss" scoped>
 .splice-app {
   position: absolute;
-  width: 100vw;
-  height: 100vh;
   display: grid;
   .splice-item {
-    box-shadow: 1px 1px #ffffff;
+    box-shadow: 1px 1px #f2aaaa;
   }
 }
 </style>

@@ -1,7 +1,8 @@
 <template>
     <div class="painter-app">
-        <div v-if="imageSrc" class="show-image" :style="`background-image:url( ${imageSrc} )`">
-            <splice v-if="nums > 0" :nums="nums"></splice>
+        <div v-if="imageSrc" class="show-image">
+            <img :src="imageSrc" :alt="imageInfo.name" srcset="" ref="image">
+            <splice v-if="nums > 0" :nums="nums" :position="position"></splice>
             <div class="action">
                 <button @click="splice(2)">2 x 2</button>
                 <button @click="splice(4)">4 x 4</button>
@@ -21,7 +22,8 @@ export default {
         return {
             imageInfo: {},
             imageSrc: "",
-            nums: 0
+            nums: 0,
+            position: {}
         };
     },
     computed: {
@@ -29,7 +31,6 @@ export default {
     methods: {
         upload: function(e){
             let file = e.target.files[0];
-            console.log(file)
             let image = new Image();
             let reader = new FileReader();
             this.imageInfo = file;
@@ -44,10 +45,19 @@ export default {
             }
         },
         splice: function(nums) {
+            // 获取图片位置 和 大小
+            let imageNode = this.$refs.image;
+            this.position = {
+                height : imageNode.clientHeight + 'px',
+                width : imageNode.clientWidth + 'px',
+                left : imageNode.offsetLeft + 'px',
+                top : imageNode.offsetTop + 'px'
+            }
             this.nums = nums
         },
         reset: function(){
             this.imageSrc = ""
+            this.nums = 0
         }
     },
     components : {
@@ -109,12 +119,14 @@ export default {
 
 
 .show-image {
-    background-repeat: no-repeat;
     width: 100%;
-    background-size: contain;
-    margin: auto;
     height: 100%;
-    background-position: center;
+    display: flex;
+    img {
+        margin: auto;
+        max-width: 100%;
+        max-height: 100%;
+    }
 }
 
 .action {
@@ -129,7 +141,7 @@ export default {
     justify-items: center;
     button {
         width: 100px;
-        background-image: linear-gradient(#BDBDBD,#F0F0F0);
+        background-image: linear-gradient(45deg,#f0f0f0,#f2aaaa);
         border: none;
         border-radius: 8px;
         color: #ffffff;
@@ -155,7 +167,7 @@ export default {
     box-shadow: 1px 1px 3px 3px #d6d6d6;
     text-align: center;
     line-height: 20px;
-    border: 1px solid #cccccc;
-    color: #cccccc;
+    border: 1px solid #f2aaaa;
+    color: #f2aaaa;
 }
 </style>
